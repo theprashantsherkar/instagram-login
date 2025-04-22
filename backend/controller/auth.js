@@ -5,39 +5,28 @@ const REDIRECT_URI = process.env.REDIRECT_URI;
 let userAccessToken = "";
 
 export const redirectAPI = async (req, res) => {
-    res.send(`<a href="https://api.instagram.com/oauth/authorize?client_id=${INSTAGRAM_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=user_profile,user_media&response_type=code">Login with Instagram</a>`);
+  const redirectUrl = `https://api.instagram.com/oauth/authorize?client_id=${INSTAGRAM_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=user_profile,user_media&response_type=code`;
+  res.redirect(redirectUrl);
 };
 
 
 export const loginAccountAPI = async (req, res) => {
-    const code = req.query.code;
-
-    try {
-      const tokenRes = await axios.post(
-        "https://api.instagram.com/oauth/access_token",
-        new URLSearchParams({
-          client_id: INSTAGRAM_CLIENT_ID,
-          client_secret: INSTAGRAM_CLIENT_SECRET,
-          grant_type: "authorization_code",
-          redirect_uri: REDIRECT_URI,
-          code: code,
-        })
-      );
-  
-      const access_token = tokenRes.data.access_token;
-      const user_id = tokenRes.data.user_id;
-  
-      const mediaRes = await axios.get(
-        `https://graph.instagram.com/me/media?fields=id,caption,media_url,media_type,timestamp&access_token=${access_token}`
-      );
-  
-      const media = mediaRes.data.data;
-  
-      res.json({ user_id, media });
-    } catch (err) {
-      console.error(err.response?.data || err.message);
-      res.status(500).send("Error during Instagram Auth");
-    }
+  const code = req.query.code;
+  try {
+    const response = await axios.post(`https://api.instagram.com/oauth/access_token`, null, {
+      params: {
+        client_id: INSTAGRAM_CLIENT_ID,
+        client_secret: INSTAGRAM_CLIENT_SECRET,
+        grant_type: 'authorization_code',
+        redirect_uri: REDIRECT_URI,
+        code
+      }
+    });
+    userAccessToken = response.data.access_token;
+    res.redirect(`http://localhost:5173/feed?token=${userAccessToken}`);
+  } catch (err) {
+    res.status(500).json({ error: 'Token exchange failed', details: err.response?.data || err.message });
+  }
 }
   
 
@@ -45,17 +34,17 @@ export const loginAccountAPI = async (req, res) => {
 
 
 
-export const getPostsAPI = async (req, res, next) => {
-    const token = req.query.token;
-    try {
-        const mediaRes = await axios.get(`https://graph.instagram.com/me/media`, {
-            params: {
-                fields: 'id,caption,media_url,permalink',
-                access_token: token
-            }
-        });
-        res.json(mediaRes.data);
-    } catch (err) {
-        res.status(500).json({ error: 'Fetching media failed' });
-    }
+export const getPostsAPI = async (req, res) => {
+  const token = req.query.token;
+  try {
+    const mediaRes = await axios.get(`https://graph.instagram.com/me/media`, {
+      params: {
+        fields: 'id,caption,media_url,permalink',
+        access_token: token
+      }
+    });
+    res.json(mediaRes.data);
+  } catch (err) {
+    res.status(500).json({ error: 'Fetching media failed', details: err.response?.data || err.message });
+  }
 }
