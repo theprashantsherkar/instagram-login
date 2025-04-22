@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 export const connectDB = async()=>{
     try {
-        const connection = await mongoose.connect(process.env.MONGO_URI, {
+        const mongoURL = process.env.MONGO_URI
+        const connection = await mongoose.connect(mongoURL, {
             dbName:"Instagram Comments"
         })
         if(connection){

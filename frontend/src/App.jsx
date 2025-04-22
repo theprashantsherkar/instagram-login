@@ -27,7 +27,12 @@ function App() {
   };
 
   if (!token) {
-    return <button className='h-screen w-full flex items-center justify-center' onClick={() => window.location.href = "http://localhost:8080/api/v1/auth"}>Login with Instagram</button>;
+    return <div className='h-screen   w-full flex items-center justify-center' >
+      <button onClick={() => window.location.href = "http://localhost:8080/api/v1/auth"} className='hover:cursor-pointer hover:underline text-2xl'>
+        Login via Instagram.
+      </button>
+
+    </div>;
   }
 
   return (
