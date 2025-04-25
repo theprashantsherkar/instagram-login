@@ -84,5 +84,4 @@ app.get('/getPosts', async (req, res) => {
 
 
 
-  const port = process.env.PORT;
-  app.listen(port, () => console.log(`server is running at port: ${port}`.bgMagenta.black.bold));
+  app.listen(process.env.PORT, () => console.log(`server is running at port: ${process.env.PORT}`.bgMagenta.black.bold));
