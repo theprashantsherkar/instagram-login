@@ -1,6 +1,6 @@
-const INSTAGRAM_CLIENT_ID = process.env.INSTAGRAM_CLIENT_ID
-const INSTAGRAM_CLIENT_SECRET = process.env.INSTAGRAM_CLIENT_SECRET
-const REDIRECT_URI = process.env.REDIRECT_URI
+const INSTAGRAM_CLIENT_ID = 1659563081412659
+const INSTAGRAM_CLIENT_SECRET = "63649d86d9738a407e3651a867b47640"
+const REDIRECT_URI = "https://instagram-login-0ge0.onrender.com/api/v1/auth/instagram/callback"
 
 
 let userAccessToken = "";
@@ -31,7 +31,7 @@ export const loginAccountAPI = async (req, res) => {
     console.log('second api passed')
     userAccessToken = response.data.access_token;
 
-    res.redirect(`http://localhost:5173/feed?token=${userAccessToken}`);
+    res.redirect(`http://localhost:5173?token=${userAccessToken}`);
   } catch (err) {
     res.status(500).json({ error: 'Token exchange failed', details: err.response?.data || err.message });
   }
