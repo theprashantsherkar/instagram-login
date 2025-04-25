@@ -8,15 +8,18 @@ let userAccessToken = "";
 export const redirectAPI = async (req, res) => {
 
   const redirectUrl = `https://api.instagram.com/oauth/authorize?client_id=${INSTAGRAM_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=user_profile,user_media&response_type=code`;
-  console.log('first api passed')
+  console.log(`redirecting to: ${redirectUrl}`)
   res.redirect(redirectUrl);
-  
 };
 
 
 export const loginAccountAPI = async (req, res) => {
   const code = req.query.code;
   console.log(code);
+  console.log({
+    INSTAGRAM_CLIENT_ID,
+    INSTAGRAM_CLIENT_SECRET
+  })
 
   try {
     const response = await axios.post(`https://api.instagram.com/oauth/access_token`, null, {
