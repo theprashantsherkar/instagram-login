@@ -10,8 +10,9 @@ function App() {
 
   useEffect(() => {
     if (token) {
-      axios.get(`http://localhost:8080/getPosts?token=${token}`).then(res => {
+      axios.get(`https://instagram-login-0ge0.onrender.com/getPosts?token=${token}`).then(res => {
         setPosts(res.data.data);
+        console.log(posts);
       }).catch(err => {
         console.error('Error fetching media:', err);
       });
@@ -28,37 +29,43 @@ function App() {
 
   if (!token) {
     return <div className='h-screen   w-full flex items-center justify-center' >
-      <button onClick={() => window.location.href = "http://localhost:8080/api/v1/auth"} className='hover:cursor-pointer hover:underline text-2xl'>
+      <button onClick={() => window.location.href = "https://instagram-login-0ge0.onrender.com/"} className='hover:cursor-pointer hover:underline text-2xl'>
         Login via Instagram.
       </button>
 
     </div>;
   }
 
-  return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">Your Instagram Posts</h1>
-      <div className="grid grid-cols-2 gap-4 mt-4">
-        {posts.map(post => (
-          <div key={post.id} className="border p-4 rounded shadow">
-            <img src={post.media_url} alt="post" className="w-full" />
-            <p className="mt-2">{post.caption}</p>
-            <input
-              className="border mt-2 p-1 w-full"
-              type="text"
-              placeholder="Add comment"
-              value={comments[post.id] || ''}
-              onChange={e => handleCommentChange(post.id, e.target.value)}
-            />
-            <button
-              onClick={() => handleCommentSubmit(post.id)}
-              className="bg-blue-500 text-white px-3 py-1 mt-2 rounded"
-            >Submit</button>
-          </div>
-        ))}
-      </div>
+  // return (
+  //   <div className="p-4">
+  //     <h1 className="text-2xl font-bold">Your Instagram Posts</h1>
+  //     <div className="grid grid-cols-2 gap-4 mt-4">
+  //       {posts.map(post => (
+  //         <div key={post.id} className="border p-4 rounded shadow">
+  //           <img src={post.media_url} alt="post" className="w-full" />
+  //           <p className="mt-2">{post.caption}</p>
+  //           <input
+  //             className="border mt-2 p-1 w-full"
+  //             type="text"
+  //             placeholder="Add comment"
+  //             value={comments[post.id] || ''}
+  //             onChange={e => handleCommentChange(post.id, e.target.value)}
+  //           />
+  //           <button
+  //             onClick={() => handleCommentSubmit(post.id)}
+  //             className="bg-blue-500 text-white px-3 py-1 mt-2 rounded"
+  //           >Submit</button>
+  //         </div>
+  //       ))}
+  //     </div>
+  //   </div>
+  // );
+
+  return(
+    <div className='h-screen w-full flex items-center justify-center'>
+    Welcome you have logged in via instagram!!  
     </div>
-  );
+  )
 }
 
 export default App;
