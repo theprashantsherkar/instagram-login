@@ -71,3 +71,7 @@ app.post('/posts/:id/comments', async (req, res) => {
 
   res.json({ success: true });
 });
+
+const port = process.env.PORT | 8080;
+
+app.listen(port, ()=>console.log(`server running at port: ${port}`))
